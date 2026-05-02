@@ -11,6 +11,7 @@ TOKEN = os.getenv("TOKEN")  # Remplacez par votre token
 CHANNEL_ID = 1499861145660686396  # Remplacez par l'ID du canal
 VINTED_URL = 'https://www.vinted.fr/catalog'  # URL par défaut, modifiable
 CHECK_INTERVAL = 10  # en secondes
+is_stopped = False  # Variable pour contrôler si le bot envoie des messages
 
 # Fichier pour stocker les annonces vues
 SEEN_ITEMS_FILE = 'seen_items.json'
@@ -64,6 +65,18 @@ async def set_interval(ctx, interval: int):
     check_vinted.change_interval(seconds=interval)
     await ctx.send(f'Intervalle mis à jour : {interval} secondes')
 
+@bot.command()
+async def stop(ctx):
+    global is_stopped
+    is_stopped = True
+    await ctx.send('Bot arrêté ⛔ - Les messages ne seront plus envoyés jusqu\'à la commande `!start` ou un redémarrage')
+
+@bot.command()
+async def start(ctx):
+    global is_stopped
+    is_stopped = False
+    await ctx.send('Bot redémarré ✅ - Les messages seront à nouveau envoyés')
+
 @bot.command(name='help')
 async def help_command(ctx):
     text = (
@@ -71,12 +84,17 @@ async def help_command(ctx):
         '`!set_url <url>` - Modifier l\'URL Vinted ciblée\n'
         '`!set_channel <id>` ou `!set_id <id>` - Modifier le canal de notification\n'
         '`!set_interval <secondes>` - Modifier la fréquence de vérification\n'
+        '`!stop` - Arrêter l\'envoi de messages\n'
+        '`!start` - Redémarrer l\'envoi de messages\n'
         '`!help` - Afficher cette aide'
     )
     await ctx.send(text)
 
 @tasks.loop(seconds=CHECK_INTERVAL)
 async def check_vinted():
+    global is_stopped
+    if is_stopped:
+        return
     try:
         response = requests.get(VINTED_URL, headers={'User-Agent': 'Mozilla/5.0'})
         if response.status_code != 200:
