@@ -65,7 +65,7 @@ async def set_interval(ctx, interval: int):
     check_vinted.change_interval(seconds=interval)
     await ctx.send(f'Intervalle mis à jour : {interval} secondes')
 
-@bot.command(aliases=['stop'])
+@bot.command()
 async def stop(ctx):
     global is_stopped
     is_stopped = True
