@@ -4,11 +4,9 @@ import requests
 from bs4 import BeautifulSoup
 import json
 import os
-from dotenv import load_dotenv
 import asyncio
 
 # Configuration
-load_dotenv()
 TOKEN = os.getenv("TOKEN")  # Remplacez par votre token
 CHANNEL_ID = 1499861145660686396  # Remplacez par l'ID du canal
 VINTED_URL = 'https://www.vinted.fr/catalog'  # URL par défaut, modifiable
