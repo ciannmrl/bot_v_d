@@ -1,0 +1,2 @@
+[deploy]
+startCommand = "python bot_discord_scan_annonces.py"
