@@ -7,7 +7,7 @@ import os
 import asyncio
 
 # Configuration
-  # Remplacez par votre token
+TOKEN = os.getenv("TOKEN")  # Remplacez par votre token
 CHANNEL_ID = 1499861145660686396  # Remplacez par l'ID du canal
 VINTED_URL = 'https://www.vinted.fr/catalog'  # URL par défaut, modifiable
 CHECK_INTERVAL = 10  # en secondes
